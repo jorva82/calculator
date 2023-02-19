@@ -16,13 +16,15 @@
             --grey-text: #CFD8DC;
             --blue-dark:#0E2675;
             --purple-dark-text: #212355;
-            --blue-sea: #E1F5FE;
+            --blue-sea: #f4fafd;
             --blue-intens-text: #0033FF;
             --xsm: 10px;
-            --sm: 12px;
+            --sm: 14px;
             --mm: 16px;
+            --im:18px;
             --lm: 20px;
             --xlm: 28px;
+            --xxlm: 32px;
 
         }
         body {
@@ -31,34 +33,119 @@
         }
         .main-container{
             width: 380px;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            margin-left: 20px;
+            background-color: var(--blue-sea);
         }
         .top-sub-container {
             width: 100%;
-            height: 300px;
+            height: 380px;
             border-radius: 0 0 24px 24px;
             background-color: var(--blue-top-container);
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
+        #energy {
+            color: var(--grey-text);
+            font-size: var(--lm);
+            font-weight: 500;
+            margin-bottom: 0;
+        }
         
         .title {
             color: var(--grey-text);
-            font-size: var(--lm);
+            font-size: var(--xlm);
             font-weight: 600;
             text-align: center;
         }
 
         .results {
-            width: 160px;
-            height: 160px;
+            width: 190px;
+            height: 190px;
             border-radius: 50%;
             background-color: var(--blue-dark);
             box-shadow: 0 0 6px 8px var(--grey-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
+
+        #resultado2{
+            color: var(--white);
+            font-size: var(--xxlm);
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 0;
+        }
+
+        #resultado3{
+            color: var(--grey-text);
+            font-size: var(--sm);
+            font-weight: 500;
+        }
+
+        #resultado1{
+            color: var(--grey-text);
+            font-size: var(--sm);
+            width: 230px;
+            text-align: center;
+        }
+
+        .ingresa-datos {
+            color: var(--purple-dark-text);
+            font-size: var(--im);
+            margin-left: 20px;
+            font-weight: 600;
+        }
+
+        .data {
+            width: 100%;
+            min-height: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 300px);
+            justify-items: stretch;
+            align-items: stretch;
+            margin-left: 20px;
+            gap: 8px;     
+        }
+
+        .data label {
+            color: var(--blue-intens-text);
+            font-weight: 500;
+            font-size: var(--sm);
+        }
+
+        .input {
+            width: 200px;
+            height: 32px;
+            background-color: var(--grey-text);
+            color: var(--purple-dark-text);
+            font-size: var(--im);
+            font-family: 'Outfit', sans-serif;
+            font-weight: bold;
+            border: solid 1px var(--blue-top-container);
+            border-radius: 4px;
+        }
+
+        .primary-button {
+            width: 280px;
+            height: 48px;
+            background-color: var(--purple-dark-text);
+            color: var(--grey-text);
+            font-family: 'Outfit', sans-serif;
+            font-size: var(--im);
+            font-weight: 600;
+            margin: 12px 0 10px 2px;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+        }
+        
     </style>
 	<script type="text/javascript">
 		function calcularEnergia() {
@@ -70,20 +157,20 @@
 
 			var radio = diametro / 2;
 			var volumen = (4/3) * Math.PI * radio * radio * radio;
-			var masa = volumen * 2500;
+			var masa = volumen * densidadAsteoriode;
 			var velocidad_ms = velocidad * 1000;
 			var energia = 0.5 * masa * velocidad_ms * velocidad_ms;
             // Conversión de julios a megatones
-            var energiaEnMegatones = energia * 2.39006e-13;
+            var energiaEnMegatones = energia * 2.39006e-16;
             // Actualización del resultado de la conversión
-            document.getElementById("resultado1").innerHTML = "La energía es equivalente a " + energiaEnMegatones.toFixed(2) + " megatones.";
+            document.getElementById("resultado1").innerHTML = "La energía es equivalente a " + energiaEnMegatones.toLocaleString("es-ES") + " megatones.";
 
             // Cálculo del radio de alcance de la explosión
             var radioDeAlcance = Math.pow((energia / ((4/3) * Math.PI * densidadMedio * velocidadDelSonidoEnElMedio)), 1/3);
   
             // Actualización del resultado del cálculo del radio de alcance
-            document.getElementById("resultado2").innerHTML = "Radio de " + (radioDeAlcance/1000).toFixed(2) + " Kms.";
-            document.getElementById("resultado3").innerHTML = "O " + radioDeAlcance.toFixed(2) + " metros.";
+            document.getElementById("resultado2").innerHTML = (radioDeAlcance/1000).toFixed(2) + " Kms.";
+            document.getElementById("resultado3").innerHTML = "O " + radioDeAlcance.toLocaleString("es-ES") + " metros.";
 
 		}
 	</script>
@@ -96,21 +183,21 @@
                 <p id="resultado2"></p>
                 <p id="resultado3"></p>
             </div>
-            <p>Energia Liberada</p>
+            <p id="energy">Energia Liberada</p>
             <p id="resultado1"></p>
         </div>
-	<p>Ingresa los datos.</p>
+	<p class="ingresa-datos">Ingresa los datos.</p>
 	<form class="data">
-		<label for="diametro">Diámetro del asteroide (metros):</label>
-		<input type="number" id="diametro" name="diametro">
-        <label for="densidad">densidad del asteroide (Kg/m3):</label>
-		<input type="number" id="densidad" name="densidad">
-		<label for="velocidad">Velocidad del asteroide (kilómetros por segundo):</label>
-		<input type="number" id="velocidad" name="velocidad">
-        <label for="densidad-medio">Densidad del medio (Kg/m3):</label>
-		<input type="number" id="densidad-medio" name="densidad-medio">
-		<label for="velocidad-sonido-medio">Velocidad del sonido en el medio (metros por segundo):</label>
-		<input type="number" id="velocidad-sonido-medio" name="velocidad-sonido-medio">
+		<label for="diametro">1. Diámetro del asteroide (metros):</label>
+		<input class="input" type="number" id="diametro" name="diametro">
+        <label for="densidad">2. Densidad del asteroide (Kg/m3):</label>
+		<input class="input" type="number" id="densidad" name="densidad">
+		<label for="velocidad">3. Velocidad del asteroide (kilómetros por segundo):</label>
+		<input class="input" type="number" id="velocidad" name="velocidad">
+        <label for="densidad-medio">4. Densidad del medio (Kg/m3):</label>
+		<input class="input" type="number" id="densidad-medio" name="densidad-medio">
+		<label for="velocidad-sonido-medio">5. Velocidad del sonido en el medio (metros por segundo):</label>
+		<input class="input" type="number" id="velocidad-sonido-medio" name="velocidad-sonido-medio">
 		<input class="primary-button" type="button" value="Calcular energía" onclick="calcularEnergia()">
 	</form>
 	
