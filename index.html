@@ -35,7 +35,7 @@
         }
         .main-container{
             width: 100%;
-            min-height: 100vh;
+            min-height: 100%;
             display: flex;
             flex-direction: column;
             background-color: var(--blue-sea);
@@ -166,32 +166,19 @@
             // "Velocidad del sonido a 25°C en metros por segundo, fuente https://es.wikipedia.org/wiki/Velocidad_del_sonido"
             var velocidadDelSonidoEnElMedio = 346;
 
-            if ((diametro >= 10) && (diametro <= 9999) ) {
-                var radio = diametro / 2;
-			    var volumen = (4/3) * Math.PI * radio * radio * radio;
-			       
-            } else {
-                window.alert("Solo se admiten valores de diametro entre 10 y 9999 metros")
-            }
-
-            if ((densidadAsteoriode >= 100) && (densidadAsteoriode <= 7000)) {
-                var masa = volumen * densidadAsteoriode;
-                
-            } else {
-                window.alert("Solo se admiten valores de densidad entre 100 y 7000 Kg/m3")
-            }
-
-			if ((velocidad >= 1) && (velocidad <= 70)) {
-                var velocidad_ms = velocidad * 1000;
-			    var energia = 0.5 * masa * velocidad_ms * velocidad_ms;
+   
+            var radio = diametro / 2;
+			var volumen = (4/3) * Math.PI * radio * radio * radio;    
+          
+            var masa = volumen * densidadAsteoriode;
+                  
+		
+            var velocidad_ms = velocidad * 1000;
+			var energia = 0.5 * masa * velocidad_ms * velocidad_ms;
                 // Conversión de julios a megatones
-                var energiaEnMegatones = energia * 2.39006e-16;
+            var energiaEnMegatones = energia * 2.39006e-16;
 
-             } else {
-                window.alert("Solo se admiten valores de velocidad entre 1 y 70 Km/s")
-
-             }
-			
+             
             // Actualización del resultado de la conversión
             document.getElementById("resultado1").innerHTML = "La energía es equivalente a " + energiaEnMegatones.toLocaleString("es-ES") + " megatones.";
 
@@ -219,11 +206,11 @@
 	<p class="ingresa-datos">Ingresa los datos.</p>
 	<form class="data">
 		<label for="diametro">1. Diámetro del asteroide (metros):</label>
-		<input class="input" type="number" id="diametro" name="diametro">
+		<input class="input" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="diametro" name="diametro" maxlength="4" required>
         <label for="densidad">2. Densidad del asteroide (Kg/m3):</label>
-		<input class="input" type="number" id="densidad" name="densidad">
+		<input class="input" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="densidad" name="densidad" maxlength="4" required>
 		<label for="velocidad">3. Velocidad del asteroide (kilómetros por segundo):</label>
-		<input class="input" type="number" id="velocidad" name="velocidad">
+		<input class="input" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="velocidad" name="velocidad" maxlength="2" required>
 		<input class="primary-button" type="button" value="Calcular energía" onclick="calcularEnergia()">
 	</form>
 	
